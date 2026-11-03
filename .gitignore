@@ -1,0 +1,19 @@
+# Build output
+build/
+Debug/
+Release/
+*.o
+*.elf
+*.hex
+*.bin
+*.map
+
+# IDE cá nhân
+.vscode/
+.idea/
+.settings/
+.metadata/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
