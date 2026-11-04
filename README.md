@@ -12,3 +12,8 @@ Dự án MCU dùng FreeRTOS, làm việc nhóm theo Git branch.
 - feat(task-xxx): thêm chức năng
 - fix(rtos): sửa lỗi
 - refactor(...): tối ưu code
+
+## Phân công công việc
+- Nam: OLED + INA219 dùng chung một bus I2C.
+- Hùng: Đọc 2 cảm biến ánh sáng LDR - ADC
+- Trung: Điều khiển một động cơ servo - 5V - PWM
