@@ -24,11 +24,9 @@ HAL_StatusTypeDef MX_ADC_Init(void)
         return HAL_ERROR;
     }
  
-    /* Hiệu chuẩn ADC một lần sau khi khởi tạo (khuyến nghị cho STM32F1) */
+    /* Hiệu chuẩn ADC một lần sau khi khởi tạo */
     return HAL_ADCEx_Calibration_Start(&hadc1);
  
-    /* Kênh được chọn trong adc_read_channel() mỗi lần đọc,
-       nên không cần cấu hình kênh ở đây. */
 }
  
 uint16_t adc_read_channel(uint32_t channel, uint8_t n)
@@ -59,18 +57,4 @@ uint16_t adc_read_channel(uint32_t channel, uint8_t n)
     }
     return (uint16_t)(sum / n);
 }
-
-#if 0
-
-=> khai báo trong task_sensor.c để đọc ADC1_IN4 và ADC1_IN5 (PA4 và PA5) cho 2 LDR
-uint16_t ldr1 = adc_read_channel(ADC_CHANNEL_4, 10);  /* đọc ADC1_IN4 (PA4) trung bình 10 mẫu */
-uint16_t ldr2 = adc_read_channel(ADC_CHANNEL_5, 10);  /* đọc ADC1_IN5 (PA5) trung bình 10 mẫu */
-
-/* tính toán giá trị diff - xác định hướng ánh sáng lệch */
-int16_t calculate_diff(uint16_t x, uint16_t y)
-{
-    return (int16_t)(x - y);
-}
-
-#endif 
 
