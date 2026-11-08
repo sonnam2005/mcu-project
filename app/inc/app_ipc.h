@@ -6,7 +6,7 @@
 #include "queue.h"
 #include "semphr.h"
  
-/* 2 cảm biến ánh sáng LDR (0...4065) */
+/* 2 cảm biến ánh sáng LDR (0...4096) */
 typedef struct {
     uint16_t ldr1;          /* PA4 */
     uint16_t ldr2;          /* PA5 */
