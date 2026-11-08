@@ -1,36 +1,37 @@
 #ifndef APP_IPC_H
 #define APP_IPC_H
-
+ 
 #include <stdint.h>
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "semphr.h"
-
-/* Du lieu 2 cam bien anh sang LDR */
+ 
+/* 2 cảm biến ánh sáng LDR (0...4065) */
 typedef struct {
-    uint16_t ldr1;
-    uint16_t ldr2;
-    uint32_t timestamp;
+    uint16_t ldr1;          /* PA4 */
+    uint16_t ldr2;          /* PA5 */
+    uint32_t timestamp;     /* tick lúc đó */
 } LightData_t;
-
-/* Du lieu dien tu INA219 */
+ 
+/* Du lieu INA219 (don vi nho nhat de khoi phai truyen float) */
 typedef struct {
-    uint16_t voltage_mv;
-    int16_t  current_ma;
+    float voltage;
+    float  current;
+    float  power;
     uint32_t timestamp;
 } PowerData_t;
-
-/* Goc 2 servo (do) */
+ 
+/* Góc 1 servo (do) */
 typedef struct {
-    uint8_t servo1_deg;
-    uint8_t servo2_deg;
+    float angle_deg;
 } ServoCmd_t;
-
+ 
 extern QueueHandle_t     xLightQueue;
 extern QueueHandle_t     xPowerQueue;
 extern QueueHandle_t     xServoQueue;
 extern SemaphoreHandle_t xI2CMutex;
-
+ 
+/* Tao mutex + queue; gọi trước vTaskStartScheduler() */
 void app_ipc_init(void);
-
+ 
 #endif
