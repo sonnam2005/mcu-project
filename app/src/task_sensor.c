@@ -5,7 +5,7 @@
 #include "semphr.h"
 #include "app_cfg.h"
 #include "app_ipc.h"
-#include "INA219.h"
+#include "ina219.h"
 
 /* Task Sensor: Đọc các giá trị của INA219 qua I2C - khóa mutex */
 void Task_sensor(void *pv)
