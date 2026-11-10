@@ -1,8 +1,11 @@
+#include <stdio.h>
+#include "FreeRTOS.h"
 #include "task_tracking.h"
 #include "app_cfg.h"
 #include "app_ipc.h"
 #include "hal_adc.h"
 #include "hal_pwm.h"
+
 
 void Task_tracking(void *pv)
 {
