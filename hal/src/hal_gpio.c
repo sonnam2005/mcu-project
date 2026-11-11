@@ -1,4 +1,9 @@
 #include "HAL_GPIO.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+extern void xPortSysTickHandler(void);
+
 
 void SystemClock_Config(void)
 {
@@ -57,5 +62,8 @@ void MX_GPIO_Init(void)
 /*NVIC*/
 void SysTick_Handler(void)
 {
-    HAL_IncTick();
+    HAL_IncTick();                                          /* cho HAL_Delay và timeout I2C */
+    if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+        xPortSysTickHandler();                              /* nhịp của FreeRTOS */
+    }
 }

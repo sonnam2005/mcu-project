@@ -1,5 +1,7 @@
 #include "HAL_ADC.h"
-  
+
+ADC_HandleTypeDef hadc1;
+
 HAL_StatusTypeDef MX_ADC_Init(void)
 {
     __HAL_RCC_ADC1_CLK_ENABLE();
