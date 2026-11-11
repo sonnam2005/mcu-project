@@ -1,5 +1,7 @@
 #include "HAL_I2C.h"
 
+I2C_HandleTypeDef hi2c1;
+
 /*Cấu hình I2C1 cho giao tiếp với INA219 và SSD1306*/
 void MX_I2C1_Init(void)
 {
