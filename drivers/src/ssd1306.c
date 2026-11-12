@@ -1,4 +1,4 @@
-#include "SSD1306.h"
+#include "ssd1306.h"
 #include <string.h>
 #include <stdlib.h>
 
