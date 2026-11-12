@@ -1,4 +1,4 @@
-#include "HAL_ADC.h"
+#include "hal_adc.h"
 
 ADC_HandleTypeDef hadc1;
 

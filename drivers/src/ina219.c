@@ -1,4 +1,4 @@
-#include "INA219.h"
+#include "ina219.h"
 #include <stdlib.h>
 #include <string.h>
 

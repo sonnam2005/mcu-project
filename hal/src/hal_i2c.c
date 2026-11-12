@@ -1,4 +1,4 @@
-#include "HAL_I2C.h"
+#include "hal_i2c.h"
 
 I2C_HandleTypeDef hi2c1;
 
