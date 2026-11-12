@@ -1,37 +1,69 @@
 #include "stm32f1xx_hal.h"
-#include "hal_pwm.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
-/* Hàm delay thô phục vụ test độc lập (chưa bật FreeRTOS Scheduler) */
-static void delay_ms(uint32_t ms) {
-    for (uint32_t i = 0; i < ms * 8000; i++) {
-        __NOP();
-    }
+#include "app_cfg.h"
+#include "app_ipc.h"
+#include "hal_gpio.h"
+#include "hal_i2c.h"
+#include "hal_adc.h"
+#include "hal_pwm.h"
+#include "ina219.h"
+#include "ssd1306.h"   
+#include "task_display.h"
+#include "task_tracking.h"
+#include "task_sensor.h"
+
+void Error_Handler(void);
+
+/* Hook bắt lỗi */
+void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
+{
+    (void)xTask; (void)pcTaskName;
+    __disable_irq();
+    for (;;) { }
+}
+
+void vApplicationMallocFailedHook(void)
+{
+    __disable_irq();
+    for (;;) { }
 }
 
 int main(void)
 {
-    /* 1. Khởi tạo hệ thống HAL cơ bản */
+    /* Khởi tạo phần cứng  */
     HAL_Init();
-    
-    /* (Lưu ý: Nếu nhóm đã có hàm SystemClock_Config() thì giữ nguyên, 
-     * nếu chưa, hệ thống sẽ chạy mặc định ở xung nhịp nội HSI) */
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_I2C1_Init();
+    if (MX_ADC_Init()  != HAL_OK) { Error_Handler(); }
+    if (MX_TIM2_Init() != HAL_OK) { Error_Handler(); }
 
-    /* 2. Khởi tạo PWM TIM2 cho Servo tại chân PA0 */
-    if (MX_TIM2_Init() != HAL_OK) {
-        /* Bị lỗi phần cứng hoặc cấu hình */
+    if (SSD1306_Init(&hi2c1) != HAL_OK) { Error_Handler(); }
+    if (INA219_Init(&hi2c1)  != HAL_OK) { Error_Handler(); }
+
+    /* Tạo mutex và queue */
+    app_ipc_init();
+
+    /* Tạo các task: dùng hằng trong app_cfg.h */
+    if (xTaskCreate(Task_tracking, "Tracking", TASK_TRACKING_STACK, NULL, TASK_TRACKING_PRIO, NULL) != pdPASS) { Error_Handler(); }
+    if (xTaskCreate(Task_sensor,   "Sensor",   TASK_SENSOR_STACK,   NULL, TASK_SENSOR_PRIO,   NULL) != pdPASS) { Error_Handler(); }
+    if (xTaskCreate(Task_display,  "Display",  TASK_DISPLAY_STACK,  NULL, TASK_DISPLAY_PRIO,  NULL) != pdPASS) { Error_Handler(); }
+
+    /* Bắt đầu scheduler */
+    vTaskStartScheduler();
+
+    for (;;)
+    {
         Error_Handler();
     }
+}
 
-    /* Vòng lặp test quét góc Servo liên tục */
-    while (1)
-    {
-        servo_set_angle(20.0f);   pos: góc tối thiểu
-        delay_ms(1000);           /* Đợi 1 giây */
-
-        servo_set_angle(90.0f);   /* Quay về giữa (90 độ) */
-        delay_ms(1000);
-
-        servo_set_angle(160.0f);  /* Quay sang góc tối đa */
-        delay_ms(1000);
-    }
+void Error_Handler(void)
+{
+    __disable_irq();
+    while (1) { }
 }
