@@ -25,7 +25,7 @@ void Task_tracking(void *pv)
         int32_t do_lech = (int32_t)ldr_trai - (int32_t)ldr_phai;
         int32_t do_lech_tuyet_doi = (do_lech >= 0) ? do_lech : -do_lech;
 
-        /* 3. Nếu lệch vượt ngưỡng vùng chết (TRACK_DEADBAND = 80) thì mới quay Servo */
+        /* 3. Nếu lệch vượt ngưỡng vùng chết (TRACK_DEADBAND) thì mới quay Servo */
         if (do_lech_tuyet_doi > TRACK_DEADBAND)
         {
             float buoc_quay = (float)do_lech * TRACK_KP * (float)TRACK_DIR;
