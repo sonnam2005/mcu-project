@@ -20,7 +20,7 @@
 #define DISPLAY_PERIOD_MS    250
  
 /* tham số điều khiển bám nắng (cần chỉnh lại) */
-#define TRACK_DEADBAND       80
+#define TRACK_DEADBAND       150
 #define TRACK_KP             0.01f
 #define TRACK_MAX_STEP       2.0f
 #define TRACK_DIR            (+1)     /* -1 : quay ngược */
